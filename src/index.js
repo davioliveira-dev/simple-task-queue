@@ -24,7 +24,7 @@ app.post('/order', (req, res) => {
   };
 
   if (order.dish && order.qty) {
-    placeOrder(order)
+    return placeOrder(order)
         .then(() => res.json({
           done: true, message: 'Your order will be ready in a while',
         }))
@@ -49,13 +49,13 @@ app.post('/order-legacy', (req, res) => {
     setTimeout(() => console.log(`🍳 Preparing ${order.dish}`), 1500);
     setTimeout(() => {
       console.log(`🧾 Order ${order.orderNo}: ${order.dish} ready`);
-      res.json({
+      return res.json({
         done: true, message: `Your ${order.qty}x ${order.dish} is ready`,
       });
     }, order.qty * 5000);
   } else {
     console.log('Incomplete order rejected');
-    res.status(422).json({
+    return res.status(422).json({
       done: false, message: 'Your order could not be placed',
     });
   }
